@@ -114,6 +114,7 @@ class _LoginForm extends StatelessWidget {
                   ? null
                   : () async {
                       FocusScope.of(context).unfocus();
+                      Navigator.pushReplacementNamed(context, 'admin');
                     },
               child: Container(
                 padding:

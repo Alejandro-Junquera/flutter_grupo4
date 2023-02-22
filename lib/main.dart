@@ -1,5 +1,6 @@
 // ignore_for_file: unused_import
 import 'package:flutter/material.dart';
+import 'package:flutter_grupo4/providers/admin_provider.dart';
 import 'package:flutter_grupo4/screens/screens.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
@@ -11,11 +12,14 @@ class AppState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*return MultiProvider(
-      providers: [],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => AdminProvider(),
+        )
+      ],
       child: const MyApp(),
-    );*/
-    return const MyApp();
+    );
   }
 }
 
@@ -31,7 +35,7 @@ class MyApp extends StatelessWidget {
         routes: {
           'login': (_) => const LoginScreen(),
           'register': (_) => const RegisterScreen(),
-          //'admin': (_) => AdminScreen(),
+          'admin': (_) => const AdminConfigScreen(),
           //'user': (_) => UserScreen(),
         },
         theme: ThemeData.light()
