@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_grupo4/providers/admin_provider.dart';
 import 'package:flutter_grupo4/screens/screens.dart';
+import 'package:flutter_grupo4/services/services.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,9 @@ class AppState extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => AdminProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AuthService(),
         )
       ],
       child: const MyApp(),

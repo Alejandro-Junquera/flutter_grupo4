@@ -73,20 +73,16 @@ class _LoginForm extends StatelessWidget {
           children: [
             TextFormField(
                 autocorrect: false,
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.name,
                 decoration: InputDecorations.authInputDecoration(
-                  hinText: 'Pepi.to@gmail.com',
-                  labelText: 'Email',
-                  prefixIcon: Icons.alternate_email_sharp,
-                ),
-                onChanged: (value) => loginForm.email = value,
+                    hinText: 'Pepito',
+                    labelText: 'UserName',
+                    prefixIcon: Icons.supervised_user_circle),
+                onChanged: (value) => loginForm.username = value,
                 validator: (value) {
-                  String pattern =
-                      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                  RegExp regExp = RegExp(pattern);
-                  return regExp.hasMatch(value ?? '')
+                  return (value != null && value.length >= 3)
                       ? null
-                      : 'Use a valid email';
+                      : 'User name must have more than 6 characters';
                 }),
             const SizedBox(height: 30),
             TextFormField(

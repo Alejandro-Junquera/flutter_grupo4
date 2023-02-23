@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_grupo4/services/services.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
@@ -72,47 +73,14 @@ class _RegisterForm extends StatelessWidget {
                 keyboardType: TextInputType.name,
                 decoration: InputDecorations.authInputDecoration(
                     hinText: 'Pepito',
-                    labelText: 'Name',
+                    labelText: 'UserName',
                     prefixIcon: Icons.supervised_user_circle),
-                onChanged: (value) => registerForm.name = value,
+                onChanged: (value) => registerForm.username = value,
                 validator: (value) {
                   return (value != null && value.length >= 3)
                       ? null
-                      : 'Name must have more than 3 characters';
+                      : 'User name must have more than 6 characters';
                 }),
-            const SizedBox(height: 5),
-            TextFormField(
-                autocorrect: false,
-                keyboardType: TextInputType.name,
-                decoration: InputDecorations.authInputDecoration(
-                    hinText: 'Perez Perez',
-                    labelText: 'Surname',
-                    prefixIcon: Icons.supervised_user_circle_outlined),
-                onChanged: (value) => registerForm.surname = value,
-                validator: (value) {
-                  return (value != null && value.length >= 5)
-                      ? null
-                      : 'Name must have more than 5 characters';
-                }),
-            const SizedBox(height: 5),
-            TextFormField(
-                autocorrect: false,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecorations.authInputDecoration(
-                  hinText: 'Pepi.to@gmail.com',
-                  labelText: 'Email',
-                  prefixIcon: Icons.alternate_email_sharp,
-                ),
-                onChanged: (value) => registerForm.email = value,
-                validator: (value) {
-                  String pattern =
-                      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                  RegExp regExp = RegExp(pattern);
-                  return regExp.hasMatch(value ?? '')
-                      ? null
-                      : 'Use a valid email';
-                }),
-            const SizedBox(height: 5),
             TextFormField(
                 autocorrect: false,
                 obscureText: true,
@@ -143,32 +111,6 @@ class _RegisterForm extends StatelessWidget {
                       : 'The password and the c_pasword must be the same';
                 }),
             const SizedBox(height: 5),
-            TextFormField(
-                autocorrect: false,
-                keyboardType: TextInputType.number,
-                decoration: InputDecorations.authInputDecoration(
-                    hinText: '123456789',
-                    labelText: 'Telephone',
-                    prefixIcon: Icons.phone),
-                onChanged: (value) => registerForm.telephone = value,
-                validator: (value) {
-                  return (value != null && value.length == 9)
-                      ? null
-                      : 'Telephone must have 9 digit';
-                }),
-            const SizedBox(height: 5),
-            TextFormField(
-                autocorrect: false,
-                keyboardType: TextInputType.text,
-                decoration: InputDecorations.authInputDecoration(
-                    hinText: 'Cadiz',
-                    labelText: 'City',
-                    prefixIcon: Icons.location_city),
-                onChanged: (value) => registerForm.surname = value,
-                validator: (value) {
-                  return (value != null) ? null : 'Select your city';
-                }),
-            const SizedBox(height: 5),
             MaterialButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
@@ -179,6 +121,21 @@ class _RegisterForm extends StatelessWidget {
                   ? null
                   : () async {
                       FocusScope.of(context).unfocus();
+                      final registerService =
+                          Provider.of<AuthService>(context, listen: false);
+                      if (!registerForm.isValidForm()) return;
+                      final String? errorMessage =
+                          await registerService.register(
+                        registerForm.username,
+                        registerForm.password,
+                      );
+                      if (errorMessage != null) {
+                        // ignore: use_build_context_synchronously
+                        customToast(errorMessage, context);
+                      } else {
+                        // ignore: use_build_context_synchronously
+                        Navigator.of(context).pushNamed('login');
+                      }
                     },
               child: Container(
                 padding:

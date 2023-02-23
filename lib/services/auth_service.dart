@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthService extends ChangeNotifier {
-  final String _baseUrl = 'semillero.allsites.es';
+  final String _baseUrl = 'localhost:8080';
   final storage = const FlutterSecureStorage();
   bool isLoading = true;
   String mensaje = '';
@@ -25,7 +25,7 @@ class AuthService extends ChangeNotifier {
       'password': password
     };
 
-    final url = Uri.http(_baseUrl, '/public/api/login', {});
+    final url = Uri.http(_baseUrl, '/login', {});
     final resp = await http.post(url,
         headers: {
           'Content-type': 'application/json',
@@ -48,17 +48,12 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-  Future<String?> register(String name, String surname, String email,
-      String password, String cPassword, int cicleId) async {
+  Future<String?> register(String username, String password) async {
     final Map<String, dynamic> authData = {
-      'firstname': name,
-      'secondname': surname,
-      'email': email,
+      'username': username,
       'password': password,
-      'c_password': cPassword,
-      'company_id': cicleId,
     };
-    final url = Uri.http(_baseUrl, '/public/api/register', {});
+    final url = Uri.http(_baseUrl, 'register', {});
 
     final resp = await http.post(url,
         headers: {
@@ -68,15 +63,11 @@ class AuthService extends ChangeNotifier {
         },
         body: json.encode(authData));
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-
-    if (decodedResp['success'] == true) {
-      await storage.write(key: 'token', value: decodedResp['data']['token']);
-      await storage.write(
-          key: 'name', value: decodedResp['data']['firstname'].toString());
-      //String id = decodedResp['data']['id'].toString();
-      //VerifyService().isVerify(id);
+    if (decodedResp['status'] == 500) {
+      return 'User name already exist';
     } else {
-      return decodedResp['message'];
+      await storage.write(key: 'token', value: decodedResp['token']);
+      await storage.write(key: 'id', value: decodedResp['id'].toString());
     }
     return null;
   }
