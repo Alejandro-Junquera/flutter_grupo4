@@ -110,7 +110,21 @@ class _LoginForm extends StatelessWidget {
                   ? null
                   : () async {
                       FocusScope.of(context).unfocus();
-                      Navigator.pushReplacementNamed(context, 'admin');
+                      //Navigator.pushReplacementNamed(context, 'admin');
+                      final loginService =
+                          Provider.of<AuthService>(context, listen: false);
+                      if (!loginForm.isValidForm()) return;
+                      final String? errorMessage = await loginService.login(
+                        loginForm.username,
+                        loginForm.password,
+                      );
+                      if (errorMessage == 'ROLE_USER') {
+                        // ignore: use_build_context_synchronously
+                        Navigator.of(context).pushNamed('admin');
+                      } else {
+                        // ignore: use_build_context_synchronously
+                        customToast(errorMessage!, context);
+                      }
                     },
               child: Container(
                 padding:

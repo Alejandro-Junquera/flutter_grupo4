@@ -19,13 +19,13 @@ class AuthService extends ChangeNotifier {
     return await storage.read(key: 'id') ?? '';
   }
 
-  Future<String?> login(String email, String password) async {
+  Future<String?> login(String username, String password) async {
     final Map<String, dynamic> authData = {
-      'email': email,
+      'username': username,
       'password': password
     };
 
-    final url = Uri.http(_baseUrl, '/login', {});
+    final url = Uri.http(_baseUrl, 'login', {});
     final resp = await http.post(url,
         headers: {
           'Content-type': 'application/json',
@@ -34,17 +34,12 @@ class AuthService extends ChangeNotifier {
         },
         body: json.encode(authData));
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-    if (decodedResp['success'] == true) {
-      await storage.write(key: 'token', value: decodedResp['data']['token']);
-      await storage.write(
-          key: 'id', value: decodedResp['data']['id'].toString());
-      return decodedResp['data']['type'] +
-          ',' +
-          decodedResp['data']['actived'].toString() +
-          ',' +
-          decodedResp['data']['deleted'].toString();
+    if (decodedResp['status'] == 403) {
+      return 'Password or user incorrect';
     } else {
-      return decodedResp['message'];
+      await storage.write(key: 'token', value: decodedResp['token']);
+      await storage.write(key: 'id', value: decodedResp['id'].toString());
+      return decodedResp['role'];
     }
   }
 
@@ -65,10 +60,7 @@ class AuthService extends ChangeNotifier {
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
     if (decodedResp['status'] == 500) {
       return 'User name already exist';
-    } else {
-      await storage.write(key: 'token', value: decodedResp['token']);
-      await storage.write(key: 'id', value: decodedResp['id'].toString());
-    }
+    } else {}
     return null;
   }
 
