@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_grupo4/providers/filtrar_provider.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 
 import '../models/models.dart';
+import '../screens/screens.dart';
 import '../services/products_service.dart';
 
 class GestionarProductosPage extends StatefulWidget {
@@ -81,7 +83,14 @@ class _GestionarProductosPageState extends State<GestionarProductosPage> {
                   ),
                   SlidableAction(
                     onPressed: (BuildContext context) {
-                      //EnsPoint delete
+                      final prueba = Provider.of<FiltarFormProvider>(context,
+                          listen: false);
+                      prueba.id == allProducts[index].id!;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditProductScreen(
+                                  id: allProducts[index].id!)));
                     },
                     backgroundColor: Colors.blue,
                     icon: Icons.edit,

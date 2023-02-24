@@ -1,8 +1,10 @@
 // ignore_for_file: unused_import
 import 'package:flutter/material.dart';
 import 'package:flutter_grupo4/providers/admin_provider.dart';
+import 'package:flutter_grupo4/providers/filtrar_provider.dart';
 import 'package:flutter_grupo4/providers/new_category_provider.dart';
 import 'package:flutter_grupo4/providers/new_product_provider.dart';
+import 'package:flutter_grupo4/providers/user_provider.dart';
 import 'package:flutter_grupo4/screens/screens.dart';
 import 'package:flutter_grupo4/services/services.dart';
 // ignore: depend_on_referenced_packages
@@ -34,6 +36,12 @@ class AppState extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => NewCategoryProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => FiltarFormProvider(),
         )
       ],
       child: const MyApp(),
@@ -56,6 +64,7 @@ class MyApp extends StatelessWidget {
           'admin': (_) => const AdminConfigScreen(),
           'admin_newProductScreen': (_) => const NewProductScreen(),
           'admin_newCategoryScreen': (_) => const NewCategoryScreen(),
+          'user': (_) => const UserConfigScreen(),
         },
         theme: ThemeData.light()
             .copyWith(scaffoldBackgroundColor: Colors.grey[300]));

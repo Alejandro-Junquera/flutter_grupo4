@@ -34,6 +34,7 @@ class AuthService extends ChangeNotifier {
         },
         body: json.encode(authData));
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
+    print(decodedResp);
     if (decodedResp['status'] == 403) {
       return 'Password or user incorrect';
     } else {

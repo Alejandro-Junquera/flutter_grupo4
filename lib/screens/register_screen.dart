@@ -91,7 +91,7 @@ class _RegisterForm extends StatelessWidget {
                     prefixIcon: Icons.lock_open),
                 onChanged: (value) => registerForm.password = value,
                 validator: (value) {
-                  return (value != null && value.length >= 2)
+                  return (value != null && value.length >= 6)
                       ? null
                       : 'The password must have more than 6 characters';
                 }),

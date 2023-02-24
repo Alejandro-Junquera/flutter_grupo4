@@ -69,7 +69,6 @@ class CategoryService extends ChangeNotifier {
           "Authorization": token!
         },
         body: json.encode(productData));
-    print(resp.body);
     isLoading = false;
     notifyListeners();
     return allCategories;
