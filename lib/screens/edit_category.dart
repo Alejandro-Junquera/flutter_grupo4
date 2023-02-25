@@ -105,7 +105,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                 child: const Text(
-                  'Create',
+                  'Update',
                   style: TextStyle(color: Colors.white),
                 ),
               ),

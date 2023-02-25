@@ -152,7 +152,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                 child: const Text(
-                  'Create',
+                  'Update',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
