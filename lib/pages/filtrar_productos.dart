@@ -102,7 +102,7 @@ class _FiltrarProductosPageState extends State<FiltrarProductosPage> {
             itemCount: allProducts.length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
-                color: Colors.red,
+                color: Colors.grey[500],
                 height: 80,
                 child: ListTile(
                   title: Text(

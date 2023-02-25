@@ -1,5 +1,6 @@
 // ignore: depend_on_referenced_packages
 import 'package:flutter_grupo4/pages/gestionar_productos.dart';
+import 'package:flutter_grupo4/services/services.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class AdminConfigScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey[700],
         title: const Center(
           child: Text('Menú Admin'),
         ),
@@ -21,6 +23,9 @@ class AdminConfigScreen extends StatelessWidget {
           icon: const Icon(Icons.logout),
           onPressed: () async {
             // ignore: use_build_context_synchronously
+            final authService =
+                Provider.of<AuthService>(context, listen: false);
+            authService.logout();
             Navigator.pushReplacementNamed(context, 'login');
           },
         ),

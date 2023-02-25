@@ -83,9 +83,6 @@ class _GestionarProductosPageState extends State<GestionarProductosPage> {
                   ),
                   SlidableAction(
                     onPressed: (BuildContext context) {
-                      final prueba = Provider.of<FiltarFormProvider>(context,
-                          listen: false);
-                      prueba.id == allProducts[index].id!;
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -97,11 +94,13 @@ class _GestionarProductosPageState extends State<GestionarProductosPage> {
                   ),
                 ]),
                 child: Container(
-                  color: Colors.red,
+                  color: Colors.blueGrey[300],
                   height: 80,
                   child: ListTile(
                     title: Text(
-                        '${allProducts[index].nombre}  ${allProducts[index].precio}€'),
+                      '${allProducts[index].nombre}  ${allProducts[index].precio}€',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     subtitle: Text(allProducts[index].descripcion.toString()),
                   ),
                 ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../pages/favoritos.dart';
 import '../pages/filtrar_productos.dart';
 import '../providers/user_provider.dart';
+import '../services/services.dart';
 import '../widgets/BottomNavigationBarPersonalizadoUser.dart';
 
 class UserConfigScreen extends StatelessWidget {
@@ -19,7 +20,10 @@ class UserConfigScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.logout),
           onPressed: () async {
-            // ignore: use_build_context_synchronously
+            // ignore: use_build_context_synchronouslyc
+            final authService =
+                Provider.of<AuthService>(context, listen: false);
+            authService.logout();
             Navigator.pushReplacementNamed(context, 'login');
           },
         ),
@@ -31,7 +35,7 @@ class UserConfigScreen extends StatelessWidget {
 }
 
 class _Ofertas extends StatelessWidget {
-  const _Ofertas({super.key});
+  const _Ofertas();
 
   @override
   Widget build(BuildContext context) {

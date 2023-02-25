@@ -1,3 +1,4 @@
+export 'package:flutter_grupo4/screens/edit_category.dart';
 export 'package:flutter_grupo4/screens/edit_product.dart';
 export 'package:flutter_grupo4/screens/user_config.dart';
 export 'package:flutter_grupo4/screens/new_category.dart';
