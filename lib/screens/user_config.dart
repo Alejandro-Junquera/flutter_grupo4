@@ -14,6 +14,7 @@ class UserConfigScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey,
         title: const Center(
           child: Text('Menú User'),
         ),

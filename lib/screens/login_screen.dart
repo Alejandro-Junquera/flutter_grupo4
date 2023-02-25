@@ -95,9 +95,11 @@ class _LoginForm extends StatelessWidget {
                     prefixIcon: Icons.lock_clock_outlined),
                 onChanged: (value) => loginForm.password = value,
                 validator: (value) {
-                  return (value != null && value.length >= 6)
+                  String pattern = r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)';
+                  RegExp regExp = RegExp(pattern);
+                  return regExp.hasMatch(value ?? '')
                       ? null
-                      : 'the password must have more than 6 characters';
+                      : 'Password must have atleast one Capital Letter, Small Letters, Numbers & a special character ';
                 }),
             const SizedBox(height: 30),
             MaterialButton(

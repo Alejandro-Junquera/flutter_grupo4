@@ -91,9 +91,11 @@ class _RegisterForm extends StatelessWidget {
                     prefixIcon: Icons.lock_open),
                 onChanged: (value) => registerForm.password = value,
                 validator: (value) {
-                  return (value != null && value.length >= 6)
+                  String pattern = r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)';
+                  RegExp regExp = RegExp(pattern);
+                  return regExp.hasMatch(value ?? '')
                       ? null
-                      : 'The password must have more than 6 characters';
+                      : 'Password must have atleast one Capital Letter, Small Letters, Numbers & a special character ';
                 }),
             const SizedBox(height: 5),
             TextFormField(
