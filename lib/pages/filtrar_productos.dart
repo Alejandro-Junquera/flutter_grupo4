@@ -1,5 +1,8 @@
 // ignore: depend_on_referenced_packages
+import 'package:flutter_grupo4/pages/gestionar_categoria.dart';
 import 'package:flutter_grupo4/providers/filtrar_provider.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import '../models/models.dart';
@@ -15,11 +18,35 @@ class FiltrarProductosPage extends StatefulWidget {
 class _FiltrarProductosPageState extends State<FiltrarProductosPage> {
   List<Products> allProducts = [];
   List<Categories> allCategories = [];
+  List<Products> allFavourites = [];
+  List<bool> exist = [];
   Future getAllProducts() async {
     setState(() => allProducts.clear());
     final productService = Provider.of<ProductService>(context, listen: false);
     await productService.getProducts();
     setState(() => allProducts = productService.allProducts);
+    setState(() {
+      for (var i in allProducts) {
+        exist.add(true);
+      }
+    });
+  }
+
+  Future getAllFavourites() async {
+    setState(() => allFavourites.clear());
+    setState(() => exist.clear());
+    final productService = Provider.of<ProductService>(context, listen: false);
+    await productService.allFavouriteProducts();
+    setState(() => allFavourites = productService.allFavourites);
+    setState(() {
+      for (int i = 0; i < allFavourites.length; i++) {
+        for (int x = 0; x < allProducts.length; x++) {
+          if (allFavourites[i].id == allProducts[x].id) {
+            exist[x] = false;
+          }
+        }
+      }
+    });
   }
 
   Future getAllCategories() async {
@@ -36,6 +63,7 @@ class _FiltrarProductosPageState extends State<FiltrarProductosPage> {
     super.initState();
     getAllProducts();
     getAllCategories();
+    getAllFavourites();
   }
 
   @override
@@ -101,13 +129,34 @@ class _FiltrarProductosPageState extends State<FiltrarProductosPage> {
           child: ListView.separated(
             itemCount: allProducts.length,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                color: Colors.grey[500],
-                height: 80,
-                child: ListTile(
-                  title: Text(
-                      '${allProducts[index].nombre}  ${allProducts[index].precio}€'),
-                  subtitle: Text(allProducts[index].descripcion.toString()),
+              return Slidable(
+                enabled: exist[index],
+                startActionPane:
+                    ActionPane(motion: const DrawerMotion(), children: [
+                  SlidableAction(
+                    onPressed: ((context) {
+                      final productService =
+                          Provider.of<ProductService>(context, listen: false);
+                      productService
+                          .newFavouriteProduct(allProducts[index].id!);
+                      customToast(
+                          'Product add to favourites correctly', context);
+                      setState(() {
+                        exist[index] = false;
+                      });
+                    }),
+                    backgroundColor: const Color.fromARGB(255, 243, 225, 61),
+                    icon: Icons.star,
+                  )
+                ]),
+                child: Container(
+                  color: Colors.grey[500],
+                  height: 80,
+                  child: ListTile(
+                    title: Text(
+                        '${allProducts[index].nombre}  ${allProducts[index].precio}€'),
+                    subtitle: Text(allProducts[index].descripcion.toString()),
+                  ),
                 ),
               );
             },

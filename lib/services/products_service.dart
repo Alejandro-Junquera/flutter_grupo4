@@ -9,6 +9,7 @@ class ProductService extends ChangeNotifier {
   final String _baseUrl = 'localhost:8080';
   bool isLoading = true;
   final List<Products> allProducts = [];
+  final List<Products> allFavourites = [];
   Products? product;
 
   getProducts() async {
@@ -126,6 +127,49 @@ class ProductService extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
     return allProducts;
+  }
+
+  allFavouriteProducts() async {
+    allFavourites.clear();
+    String? id = await AuthService().readId();
+    final url = Uri.http(_baseUrl, '/users/$id/favoritos');
+    String? token = await AuthService().readToken();
+    isLoading = true;
+    notifyListeners();
+    final resp = await http.get(
+      url,
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        "Authorization": token!
+      },
+    );
+    if (jsonDecode(resp.body) == []) {
+    } else {
+      final List<dynamic> decodedResp = json.decode(resp.body);
+      for (var i in decodedResp) {
+        allFavourites.add(Products.fromJson(i));
+      }
+      isLoading = false;
+      notifyListeners();
+      return allFavourites;
+    }
+  }
+
+  newFavouriteProduct(int idProduct) async {
+    String? token = await AuthService().readToken();
+    String? id = await AuthService().readId();
+    final url = Uri.http(_baseUrl, '/api/users/$id/favoritos/$idProduct');
+    isLoading = true;
+    notifyListeners();
+    final resp = await http.post(
+      url,
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        "Authorization": token!
+      },
+    );
   }
 
   filterByCategory(int category) async {
